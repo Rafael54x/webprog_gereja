@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPdI Bethlehem</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="icon" type="image/png" href="/Foto/logo/logo_biasa.png"> 
+    <link rel="stylesheet" href="/css/style.css">
+    
+    <style>
+        /* --- STYLE JADWAL IBADAH --- */
+        /* Warna Ungu Baru */
+        .text-purple {
+            color: #4a058c !important;
+        }
+
+        /* Container Utama Galeri */
+        .marquee-container {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            background: #fff;
+            padding: 20px 0;
+        }
+
+        /* Jalur/Track Galeri */
+        .marquee-track {
+            display: flex;
+            width: max-content; 
+            gap: 15px;
+            /* Animasi jalan terus */
+            animation: scrollGallery 40s linear infinite; 
+        }
+
+        /* Styling Item Gambar */
+        .slide-item img {
+            height: 250px; 
+            width: auto;   
+            object-fit: cover;
+            display: block;
+            border-radius: 0 !important; /* Kotak lancip */
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+            
+            /* Ubah kursor jadi jari telunjuk saat disorot */
+            cursor: pointer; 
+            transition: opacity 0.3s;
+        }
+
+        .slide-item img:hover {
+            opacity: 0.8; 
+        }
+
+        /* Animasi Loop */
+        @keyframes scrollGallery {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); } 
+        }
+
+        /* 1. Style Default (Desktop) */
+        .nav-pills .nav-link {
+            background-color: transparent !important;
+            color: #999; /* Default: Abu-abu muda */
+            border: none !important;
+            border-radius: 0;
+            font-size: 1.1rem;
+            padding-left: 0;
+            transition: color 0.3s;
+        }
+        
+        /* Saat aktif (Dipilih) */
+        .nav-pills .nav-link.active {
+            color: #270349 !important;
+            font-weight: 800 !important;
+            border-left: 3px solid #270349 !important; /* Garis kecil di kiri */
+            padding-left: 10px !important;
+        }
+
+        .nav-pills .nav-link:hover {
+            color: #270349;
+        }
+
+        /* 2. Style Khusus Layar Kecil (Mobile) */
+        @media (max-width: 768px) {
+            .nav-pills .nav-link {
+                color: #555 !important; /* Abu-abu tua */
+                margin-bottom: 5px;
+            }
+            
+            .nav-pills .nav-link.active {
+                color: #270349 !important;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="splash-screen">
+        <video id="splash-video" src="/Foto/logo/animasi_logo.mp4" autoplay muted playsinline></video>
+    </div>
+
+    <header>
+        <nav class="navbar navbar-expand-xl navbar-dark container-fluid px-4">
+            <a class="navbar-brand" href="index.html">
+                <img src="/Foto/logo/logo_putih.png" alt="Logo Gereja" style="width: 70px;">
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title">MENU</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+                </div>
+
+                <div class="offcanvas-body">
+                    <div class="navbar-nav justify-content-end flex-grow-1 pe-3 align-items-xl-center">
+                        <a href="/tentang.html" class="nav-link public-only">Tentang Kami</a>
+                        <a href="/jadwal.html" class="nav-link public-only">Jadwal Ibadah</a>
+                        <a href="/merchandise.html" class="nav-link public-only jemaat-only">Merchandise</a>
+                        <a href="/galeri.html" class="nav-link public-only">Galeri</a>
+                        <a href="/persembahan.html" class="nav-link public-only">Persembahan</a>
+                        
+                        <a href="/merchAdmin.html" class="nav-link admin-only">Stok</a>
+                        <a href="/eventAdmin.html" class="nav-link admin-only">Event Admin</a>
+                        <a href="/jemaat.html" class="nav-link admin-only">Jemaat Admin</a>
+                        <a href="/galleryAdmin.html" class="nav-link admin-only">Galeri Admin</a>
+
+                        <a href="/event.html" class="nav-link jemaat-only">Event</a>
+                        <a href="/kritik.html" class="nav-link auth-only">Kritik & Saran</a>
+                        <a href="/profil.html" class="nav-link jemaat-only">Profil Saya</a>
+                    </div>
+
+                    <div class="nav-user ms-xl-3 d-flex align-items-center">
+                        <a href="/login.html" id="login-link" class="btn btn-warning fw-bold text-white rounded-pill px-4 nav-button">Login</a>
+                        <a href="/register.html" id="register-link" class="btn btn-outline-light fw-bold text-white rounded-pill px-4 ms-xl-2 nav-button">Daftar</a>
+                        <div id="user-info" style="display: none; width: 100%;">
+                            <button id="logout-btn" class="btn rounded-pill px-4" style="width: 100%;">Logout</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="hero-banner">
+        <img src="/Foto/Welcome.jpg" alt="Welcome to GPdI Bethlehem">
+    </div>
+
+    <main class="mt-5">
+        
+        <div id="public-content" class="mb-5 p-4 p-md-5">
+            <div class="container-fluid"> 
+                <div class="row align-items-center gx-5">
+                    <div class="col-lg-6 mb-4 mb-lg-0 text-start">
+                        <h1 class="display-5 mb-4" style="color: #270349; font-family:'Cinzel Decorative', cursive; font-weight: 700;">Selamat Datang</h1>
+                        <p class="lead text-muted fw-bold mb-4" style="max-width: 100%; margin-left: 0;">
+                            Website ini adalah situs resmi GPdI Bethlehem Kelapa Gading, dibangun sebagai sarana informasi dan komunikasi bagi jemaat. Untuk melihat acara gereja lebih lanjut silakan login/daftar terlebih dahulu. Tuhan Yesus memberkati.
+                        </p>
+
+                        <div class="d-flex align-items-center gap-3 mt-4">
+                            <img src="/Foto/lokasi_home.jpg" alt="Lokasi Gereja" class="img-fluid rounded-3 shadow-sm" style="height: 100px; width: auto; object-fit: cover;">
+                            <a href="https://www.google.com/maps?rlz=1C5CHFA_enID945ID945&gs_lcrp=EgZjaHJvbWUqFQgBEC4YJxivARjHARiABBiKBRiOBTIGCAAQRRg5MhUIARAuGCcYrwEYxwEYgAQYigUYjgUyBwgCEAAYgAQyDQgDEC4YrwEYxwEYgAQyEAgEEC4YrwEYxwEYgAQYjgUyBggFEEUYPTIGCAYQRRg9MgYIBxBFGD3SAQgyNjU1ajBqN6gCALACAA&um=1&ie=UTF-8&fb=1&gl=id&sa=X&geocode=KQ25NTVG9WkuMQXNCctCVIS0&daddr=Komplek+New+Gading+Batavia,+LC+9,+Jl.+Raya+Gading+Batavia+No.34,+RT.10/RW.7,+Klp.+Gading+Bar.,+Kec.+Klp.+Gading,+Jkt+Utara,+Daerah+Khusus+Ibukota+Jakarta+14240" target="_blank" class="btn btn-gradient rounded-pill px-4 py-2">
+                                Lihat Lokasi <i class="fas fa-location-arrow ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <img src="/Foto/ibadah_umum/ibadah7.jpg" alt="Ibadah 1" class="img-fluid rounded-3 shadow-purple img-cover">
+                            </div>
+                            <div class="col-6">
+                                <img src="/Foto/ibadah_umum/ibadah_14.jpg" alt="Ibadah 2" class="img-fluid rounded-3 shadow-purple img-cover">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="admin-content" class="admin-only text-start p-4 p-md-5">
+            <div class="container-fluid">
+                <h2 class="fw-bold">Panel Administratif</h2>
+                <p class="fw-bold">Selamat datang, Admin. Pilih menu di atas untuk mengelola data.</p>
+            </div>
+        </div>
+
+        <div id="jemaat-content" class="jemaat-only mb-5 p-4 p-md-5">
+            <div class="container-fluid">
+                <div class="row align-items-center gx-5">
+                    <div class="col-lg-6 mb-4 mb-lg-0 text-start">
+                        <h1 class="display-5 mb-4" style="color: #270349; font-family:'Cinzel Decorative', cursive; font-weight: 700;">
+                            Selamat Datang, <span id="welcome-user-name">Jemaat</span>
+                        </h1>
+                        <p class="lead text-muted fw-bold mb-4" style="max-width: 100%; margin-left: 0;">
+                            Website ini dibuat untuk membantu jemaat memperoleh informasi seputar kegiatan ibadah, pelayanan, persekutuan, serta berbagai informasi penting lainnya. Kiranya melalui media ini, jemaat dapat semakin terhubung, bertumbuh dalam iman, dan dikuatkan dalam kasih Tuhan.
+                        </p>
+
+                        <div class="d-flex align-items-center gap-3 mt-4">
+                            <img src="/Foto/lokasi_home.jpg" alt="Lokasi Gereja" class="img-fluid rounded-3 shadow-sm" style="height: 80px; width: auto; object-fit: cover;">
+                            <a href="https://www.google.com/maps?rlz=1C5CHFA_enID945ID945&gs_lcrp=EgZjaHJvbWUqFQgBEC4YJxivARjHARiABBiKBRiOBTIGCAAQRRg5MhUIARAuGCcYrwEYxwEYgAQYigUYjgUyBwgCEAAYgAQyDQgDEC4YrwEYxwEYgAQyEAgEEC4YrwEYxwEYgAQYjgUyBggFEEUYPTIGCAYQRRg9MgYIBxBFGD3SAQgyNjU1ajBqN6gCALACAA&um=1&ie=UTF-8&fb=1&gl=id&sa=X&geocode=KQ25NTVG9WkuMQXNCctCVIS0&daddr=Komplek+New+Gading+Batavia,+LC+9,+Jl.+Raya+Gading+Batavia+No.34,+RT.10/RW.7,+Klp.+Gading+Bar.,+Kec.+Klp.+Gading,+Jkt+Utara,+Daerah+Khusus+Ibukota+Jakarta+14240" target="_blank" class="btn btn-gradient rounded-pill px-4 py-2">
+                                Lihat Lokasi <i class="fas fa-location-arrow ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <img src="/Foto/ibadah_umum/ibadah7.jpg" alt="Ibadah 1" class="img-fluid rounded-3 shadow-purple img-cover">
+                            </div>
+                            <div class="col-6">
+                                <img src="/Foto/ibadah_umum/ibadah_14.JPG" alt="Ibadah 2" class="img-fluid rounded-3 shadow-purple img-cover">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-11">
+                <section class="my-3">
+                    <div class="d-flex d-flex-vm justify-content-center align-items-center">
+                        <div class="text-center">
+                            <h2 class="visi-misi-title" data-bs-toggle="collapse" data-bs-target="#collapseVisi" aria-expanded="false" aria-controls="collapseVisi">VISI</h2>
+                            <small class="text-muted fst-italic">(Klik)</small>
+                        </div>
+                        <div class="vm-separator"></div>
+                        <div class="text-center">
+                            <h2 class="visi-misi-title" data-bs-toggle="collapse" data-bs-target="#collapseMisi" aria-expanded="false" aria-controls="collapseMisi">MISI</h2>
+                            <small class="text-muted fst-italic">(Klik)</small>
+                        </div>
+                    </div>
+
+                    <div class="collapse mt-4" id="collapseVisi">
+                            <img src="/Foto/visi.jpg" alt="Visi Gereja" class="img-fluid rounded-3 shadow-sm mx-auto d-block">
+                    </div>
+
+                    <div class="collapse mt-4" id="collapseMisi">
+                            <img src="/Foto/misi.jpg" alt="Misi Gereja" class="img-fluid rounded-3 shadow-sm mx-auto d-block">
+                    </div>
+                </section>
+            </div>
+        </div>
+
+    <section class="py-5 mt-3 ps-4 ps-md-5">
+        <div class="container-fluid">
+            <h1 class="display-6 mb-5 text-start" style="color: #270349; font-family:'Cinzel Decorative', cursive; font-weight: 700;">
+                Jadwal Ibadah Sepekan
+            </h1>
+
+            <div class="row align-items-start">
+                <div class="col-md-3 col-lg-2 mb-4 mb-md-0 border-end border-2" style="border-color: #eee;">
+                    <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                        <button class="nav-link active text-start fw-bold mb-2 ps-0" id="v-pills-raya-tab" data-bs-toggle="pill" data-bs-target="#v-pills-raya" type="button" role="tab">Ibadah Raya</button>
+                        <button class="nav-link text-start fw-bold mb-2 ps-0" id="v-pills-kids-tab" data-bs-toggle="pill" data-bs-target="#v-pills-kids" type="button" role="tab">Sekolah Minggu</button>
+                        <button class="nav-link text-start fw-bold mb-2 ps-0" id="v-pills-youth-tab" data-bs-toggle="pill" data-bs-target="#v-pills-youth" type="button" role="tab">Youth & Teens</button>
+                        <button class="nav-link text-start fw-bold mb-2 ps-0" id="v-pills-pasutri-tab" data-bs-toggle="pill" data-bs-target="#v-pills-pasutri" type="button" role="tab">Pasutri</button>
+                        <button class="nav-link text-start fw-bold mb-2 ps-0" id="v-pills-lansia-tab" data-bs-toggle="pill" data-bs-target="#v-pills-lansia" type="button" role="tab">Lansia</button>
+                        <button class="nav-link text-start fw-bold ps-0" id="v-pills-doa-tab" data-bs-toggle="pill" data-bs-target="#v-pills-doa" type="button" role="tab">Jadwal Doa</button>
+                    </div>
+                </div>
+
+                <div class="col-md-9 col-lg-8 ps-md-5">
+                    <div class="tab-content" id="v-pills-tabContent">
+                        
+                        <div class="tab-pane fade show active" id="v-pills-raya" role="tabpanel">
+                            <h3 class="fw-bold mb-4" style="color: #270349;">Minggu</h3>
+                            
+                            <div class="row g-4 mb-4">
+                                <div class="col-md-4">
+                                    <h5 class="fw-bold text-dark mb-1">Ibadah Umum 1</h5>
+                                    <p class="text-secondary fs-5 mb-0">07.00 WIB</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <h5 class="fw-bold text-dark mb-1">Ibadah Umum 2</h5>
+                                    <p class="text-secondary fs-5 mb-0">10.00 WIB</p>
+                                </div>
+                            </div>
+                            
+                            <p class="fst-italic text-muted"><i class="fas fa-map-marker-alt me-2"></i>Main Hall Lt. 2</p>
+                        </div>
+
+                        <div class="tab-pane fade" id="v-pills-kids" role="tabpanel">
+                            <h3 class="fw-bold mb-4" style="color: #270349;">BethKids (Minggu)</h3>
+                            
+                            <div class="row g-5">
+                                <div class="col-md-6">
+                                    <h5 class="fw-bold text-dark mb-1">Kelas Pagi</h5>
+                                    <p class="text-secondary fs-5 mb-0">07.30 WIB</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5 class="fw-bold text-dark mb-1">Kelas Siang</h5>
+                                    <p class="text-secondary fs-5 mb-0">10.30 WIB</p>
+                                </div>
+                            </div>
+                            
+                            <p class="mt-4 fst-italic text-muted"><i class="fas fa-map-marker-alt me-2"></i>Ruang Serna Lt. 1</p>
+                        </div>
+
+                        <div class="tab-pane fade" id="v-pills-youth" role="tabpanel">                            
+                            <div class="row g-5"> <div class="col-md-6">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <h4 class="fw-bold mb-0 text-dark">BYC (Youth Service)</h4>
+                                    </div>
+                                    <p class="h5 fw-bold text-purple mb-1">Sabtu</p>
+                                    <p class="fs-5 text-secondary">17.00 WIB</p>
+                                    <small class="text-muted"><i class="fas fa-map-marker-alt me-1"></i>Ruang Serna Lt. 1</small>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <h4 class="fw-bold mb-0 text-dark">ReBeth (Teens Service)</h4>
+                                    </div>
+                                    <p class="h5 fw-bold text-purple mb-1">Minggu</p>
+                                    <p class="fs-5 text-secondary">10.30 WIB</p>
+                                    <small class="text-muted"><i class="fas fa-map-marker-alt me-1"></i>Ruang Kubah Lt. 3</small>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="v-pills-pasutri" role="tabpanel">                            
+                            <div class="row g-5">
+                                <div class="col-md-6">
+                                    <h4 class="fw-bold text-dark mb-2">BCC (Ibadah Pasutri)</h4>
+                                    <p class="text-muted mb-1">Jumat Minggu 1 & 3</p>
+                                    <p class="fs-5 fw-bold text-purple">19.00 WIB</p>
+                                    <small class="text-muted"><i class="fas fa-map-marker-alt me-1"></i>Ruang Serna Lt. 1</small>
+
+                                </div>
+
+                                <div class="col-md-6">
+                                    <h4 class="fw-bold text-dark mb-2">PELPRIP (Ibadah Pria)</h4>
+                                    <p class="text-muted mb-1">Jumat Minggu ke-2</p>
+                                    <p class="fs-5 fw-bold text-purple">19.00 WIB</p>
+                                    <small class="text-muted"><i class="fas fa-map-marker-alt me-1"></i>Ruang Serna Lt. 1</small>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <h4 class="fw-bold text-dark mb-2">PELWAP (Ibadah Wanita)</h4>
+                                    <p class="text-muted mb-1">Selasa</p>
+                                    <p class="fs-5 fw-bold text-purple">19.00 WIB</p>
+                                    <small class="text-muted"><i class="fas fa-map-marker-alt me-1"></i>Ruang Serna Lt. 1</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="v-pills-lansia" role="tabpanel">                            
+                            <div class="row g-5">
+                                <div class="col-md-6">
+                                    <h4 class="fw-bold text-dark mb-2">GAC (Ibadah Lansia)</h4>
+                                    <p class="text-muted mb-1">Jadwal Menyesuaikan</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="v-pills-doa" role="tabpanel">                            
+                            <div class="row g-4">
+                                <div class="col-md-4">
+                                    <h5 class="fw-bold text-dark mb-1">Doa Kamis</h5>
+                                    <p class="text-muted small mb-1">Kamis</p>
+                                    <p class="fs-5 text-secondary">18.30 WIB</p>
+                                    <small class="text-muted"><i class="fas fa-map-marker-alt me-1"></i>Ruang Serna Lt. 1</small>
+                                </div>
+                                <div class="col-md-4">
+                                    <h5 class="fw-bold text-dark mb-1">Doa Puasa</h5>
+                                    <p class="text-muted small mb-1">Jumat (Dibuka jam 16:00 WIB)</p>
+                                    <p class="fs-5 text-secondary">Puasa : 00:00 - 16.00 WIB</p>
+                                    <p class="fs-5 text-secondary">Doa Rantai : 08:00 - 16.00 WIB</p>
+                                    <small class="text-muted"><i class="fas fa-map-marker-alt me-1"></i>Ruang Serna Lt. 1</small>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+        <hr class="my-5" style="border-top: 2px solid #eee;">
+
+    <section id="galeri-home-section" class="py-5" style="background-color: #f9f9f9; overflow: hidden;">
+        <div class="container-fluid px-0">
+            
+            <h1 class="display-5 mb-5 text-center" style="color: #270349; font-family:'Cinzel Decorative', cursive; font-weight: 700;">
+                Galeri
+            </h1>
+
+            <div class="marquee-container">
+                <div class="marquee-track" id="dynamic-marquee-track">
+                    <p class="text-center w-100 mt-3">Memuat Galeri...</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="pt-5 pb-4" style="background-color: #270c41; color: white;">
+        <div class="container-fluid text-center text-md-start px-5"> 
+            <div class="row text-center text-md-start">
+                
+                <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+                    <img src="/Foto/logo/logo_putih.png" alt="Logo GPdI Bethlehem" class="mb-4" style="width: 200px; height: auto;">
+                </div>
+
+                <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+                    <h5 class="text-uppercase mb-4">Hubungi Kami</h5>
+                    <p><i class="fas fa-home me-3"></i> Kelapa Gading, Jakarta Utara</p>
+                    <p><i class="fas fa-envelope me-3"></i> info@gpdibethlehem.com</p>
+                    <p><i class="fas fa-phone me-3"></i> +62 812 3456 7890</p>
+                </div>
+
+                <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+                    <h5 class="text-uppercase mb-4">Sosial Media</h5>
+                    <div>
+                        <a href="https://www.facebook.com/gpdibethlehem.kg" class="social-icon text-white me-2"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/gpdibethlehem.kg" class="social-icon text-white me-2"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/c/GPdIBethlehem" class="social-icon text-white"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+
+            </div>
+
+            <hr class="mb-4" style="border-color: rgba(255,255,255,0.2);">
+
+            <div class="row align-items-center">
+                <div class="col-md-12 text-center text-md-start">
+                    <p class="mb-0">© 2025 <strong>GPdI Bethlehem Kelapa Gading</strong>. All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/galeri.js"></script>
+
+    <script>
+        // SCRIPT SPLASH SCREEN (Tap to skip)
+        document.addEventListener("DOMContentLoaded", () => {
+            const splashScreen = document.getElementById('splash-screen');
+            const splashVideo = document.getElementById('splash-video');
+            
+            if (sessionStorage.getItem('introShown')) {
+                splashScreen.style.display = 'none'; return; 
+            }
+
+            let splashHasBeenHidden = false;
+            splashVideo.playbackRate = 1.7; 
+
+            function hideSplashScreen() {
+                if (splashHasBeenHidden) return; 
+                splashHasBeenHidden = true;
+                splashScreen.classList.add('hidden');
+                setTimeout(() => { splashScreen.style.display = 'none'; }, 800);
+                sessionStorage.setItem('introShown', 'true');
+            }
+
+            splashVideo.addEventListener('ended', hideSplashScreen);
+            splashVideo.addEventListener('error', hideSplashScreen); 
+            setTimeout(hideSplashScreen, 4000); 
+            
+            // Klik dimanapun di layar splash untuk skip
+            splashScreen.addEventListener('click', hideSplashScreen);
+
+            splashVideo.play().catch(error => {
+                console.log("Autoplay diblokir browser, menutup splash screen...");
+                hideSplashScreen();
+            });
+        });
+    
+    // 1. Fungsi Global untuk membuka Modal (Dipanggil saat gambar diklik)
+    function openHomeModal(imageSrc) {
+        const modal = document.getElementById('gallery-modal');
+        const modalContent = document.getElementById('modal-content');
+        const closeBtn = document.getElementById('modal-close-btn');
+
+        if (!modal || !modalContent) return;
+
+        // Isi modal dengan gambar yang diklik
+        modalContent.innerHTML = `<img src="${imageSrc}" alt="Preview" style="max-width:100%; max-height:80vh;">`;
+        
+        // Tampilkan modal (tambah class visible sesuai style galeri.js)
+        modal.classList.add('visible');
+
+        // Logic Tutup Modal
+        // a. Klik tombol silang (X)
+        closeBtn.onclick = () => modal.classList.remove('visible');
+        
+        // b. Klik area gelap di luar foto
+        modal.onclick = (e) => {
+            if (e.target === modal) modal.classList.remove('visible');
+        };
+
+        // c. Tekan tombol ESC di keyboard
+        document.onkeydown = (e) => {
+            if (e.key === 'Escape') modal.classList.remove('visible');
+        };
+    }
+
+    // 2. Script Load Data Galeri
+    document.addEventListener("DOMContentLoaded", async () => {
+        const track = document.getElementById('dynamic-marquee-track');
+        if (!track) return;
+
+        try {
+            const response = await fetch('/api/gallery');
+            if (!response.ok) throw new Error('Gagal ambil data');
+            
+            const data = await response.json();
+            const images = data.filter(item => item.file_type === 'image');
+
+            if (images.length === 0) {
+                track.innerHTML = '<p class="text-center w-100 mt-3">Belum ada foto.</p>';
+                return;
+            }
+
+            // Generate HTML
+            // Perhatikan bagian onclick="openHomeModal(...)"
+            const generateSlide = (item) => `
+                <div class="slide-item">
+                    <img src="${item.file_path}" 
+                         alt="Galeri GPdI" 
+                         loading="lazy"
+                         onclick="openHomeModal('${item.file_path}')">
+                </div>
+            `;
+
+            const slidesHTML = images.map(generateSlide).join('');
+
+            // Masukkan 2x (Duplikasi) agar looping infinite scroll mulus
+            track.innerHTML = slidesHTML + slidesHTML;
+
+        } catch (error) {
+            console.error("Error home gallery:", error);
+        }
+    });
+    </script>
+</body>
+</html>

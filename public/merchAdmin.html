@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPdI Bethlehem</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    
+    <link rel="icon" type="image/png" href="/Foto/logo/logo_biasa.png"> 
+
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/authCheck.js"></script>
+
+    <style>
+        /* === TEMA WARNA CUSTOM (LILAC & VIOLET) === */
+        :root {
+            --lilac: #C8A2C8;
+            --violet: #8F00FF;
+            --deep-purple: #4B0082;
+            --soft-lavender: #f8f4ff;
+            --gradient-main: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            --gradient-lilac: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+        }
+
+        body.admin-page { 
+            background-color: var(--soft-lavender); 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+        }
+
+        h2, h4 { color: var(--deep-purple); font-weight: bold; }
+        
+        .admin-menu a { text-decoration: none; }
+
+        /* Card Custom Gradients */
+        .bg-custom-violet { background: linear-gradient(135deg, #9d50bb, #6e48aa); color: white !important; }
+        .bg-custom-soft { background: linear-gradient(135deg, #d8bfd8, #b19cd9); color: #4b0082 !important; }
+        .bg-custom-lilac { background: var(--gradient-lilac); color: #4b0082 !important; }
+        .bg-custom-deep { background: linear-gradient(135deg, #4b0082, #2c003e); color: white !important; }
+
+        /* Style Card Dashboard */
+        .custom-card {
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: none !important; 
+            border-radius: 15px !important; 
+            transition: transform 0.3s;
+        }
+        .custom-card:hover { transform: translateY(-5px); }
+
+        /* Button Custom Colors */
+        .btn-purple-action {
+            background: linear-gradient(45deg, #8e44ad, #c39bd3);
+            border: none;
+            color: white;
+            font-weight: 500;
+        }
+        .btn-purple-action:hover {
+            background: linear-gradient(45deg, #c39bd3, #8e44ad);
+            color: white;
+        }
+
+        /* Tombol Aksi di Tabel (Dipakai oleh JS) */
+        .btn-edit-yellow {
+            background-color: #ffc107;
+            border: none;
+            color: #212529;
+            font-weight: bold;
+        }
+        .btn-edit-yellow:hover { background-color: #e0a800; color: #212529; }
+
+        .btn-delete-lilac {
+            background-color: #e0c3fc;
+            border: none;
+            color: #d82828;
+            font-weight: bold;
+        }
+        .btn-delete-lilac:hover { background-color: #c8a2c8; }
+
+        /* Table Header Custom */
+        .table-thead-purple {
+            background: var(--gradient-main) !important;
+            color: white !important;
+        }
+        
+        /* Table Styling */
+        .table {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="admin-page">
+    <header></header>
+    
+    <main class="container py-4" style="margin-top: 130px;">
+        
+        <div class="admin-menu mb-5">
+            <h4 class="mt-3 mb-4 text-center">Manajemen Inventaris & Penjualan</h4>
+            
+            <div class="row g-4 justify-content-center mb-4">
+                <div class="col-md-5">
+                    <div class="card bg-custom-violet shadow custom-card">
+                        <div class="card-body">
+                            <h5 class="card-title text-white">Master Produk</h5>
+                            <p class="card-text">Kelola daftar, harga, dan gambar merchandise.</p>
+                        </div>
+                        <div class="p-3 pt-0">
+                            <a href="#masterProduct" class="btn btn-light btn-sm w-100 fw-bold" style="color: #6e48aa;">Kelola Produk</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-5">
+                    <div class="card bg-custom-soft shadow custom-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Master Tujuan (Pelanggan)</h5>
+                            <p class="card-text">Data alamat yang pernah checkout (Otomatis terisi).</p>
+                        </div>
+                        <div class="p-3 pt-0">
+                            <a href="/admin/merch/customers.html" class="btn btn-light btn-sm w-100 fw-bold" style="color: #8e44ad;">Lihat Data Tujuan</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4 justify-content-center">
+                <div class="col-md-5">
+                    <div class="card bg-custom-lilac shadow custom-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Transaksi Masuk</h5>
+                            <p class="card-text">Pencatatan penambahan stok dari supplier/produksi.</p>
+                        </div>
+                        <div class="p-3 pt-0">
+                            <a href="/admin/merch/inventory_in.html" class="btn btn-light btn-sm w-100 fw-bold" style="color: #6a11cb;">Input Barang Masuk</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-5">
+                    <div class="card bg-custom-deep shadow text-white custom-card">
+                        <div class="card-body">
+                            <h5 class="card-title text-white">Laporan Penjualan & Stok</h5>
+                            <p class="card-text">Lihat rekap penjualan, ongkir, dan pergerakan stok.</p>
+                        </div>
+                        <div class="p-3 pt-0">
+                            <a href="/admin/merch/sales_report.html" class="btn btn-light btn-sm w-100 fw-bold" style="color: #4B0082;">Lihat Laporan</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <hr id="masterProduct" style="border-color: var(--lilac); margin: 3rem 0;">
+
+        <h4 class="mt-4 mb-3">Master Produk (CRUD)</h4>
+        <a href="#addProductModal" class="btn btn-purple-action mb-3 shadow" data-bs-toggle="modal">+ Tambah Produk Baru</a>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-hover shadow-sm">
+                <thead class="table-thead-purple">
+                    <tr>
+                        <th class="py-3">ID</th>
+                        <th class="py-3">Gambar</th>
+                        <th class="py-3">Nama Produk</th>
+                        <th class="py-3">Harga</th>
+                        <th class="py-3">Stok</th>
+                        <th class="py-3 text-center">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="adminMerchTableBody">
+                    <tr><td colspan="6" class="text-center">Memuat data admin...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="border-radius: 15px;">
+                <div class="modal-header" style="background: var(--gradient-lilac);">
+                    <h5 class="modal-title" id="addProductModalLabel" style="color: #4B0082;">Tambah Produk Baru</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addProductForm" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="productName" class="form-label">Nama Produk</label>
+                            <input type="text" class="form-control" id="productName" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="productDescription" class="form-label">Deskripsi</label>
+                            <textarea class="form-control" id="productDescription" name="description"></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="productPrice" class="form-label">Harga (Rp)</label>
+                                <input type="number" class="form-control" id="productPrice" name="price" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="productStock" class="form-label">Stok</label>
+                                <input type="number" class="form-control" id="productStock" name="stock" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="productImageFile" class="form-label">Upload Gambar Produk</label>
+                            <input type="file" class="form-control" id="productImageFile" name="imageFile"> 
+                        </div>
+                        <button type="submit" class="btn btn-purple-action w-100 py-2">Simpan Produk</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="border-radius: 15px;">
+                <div class="modal-header" style="background: var(--gradient-main); color: white;">
+                    <h5 class="modal-title" id="editProductModalLabel">Edit Produk</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editProductForm" enctype="multipart/form-data">
+                        <input type="hidden" id="editProductId" name="id">
+                        <input type="hidden" id="editExistingImageUrl" name="existingImageUrl">
+                        
+                        <div class="mb-3">
+                            <label for="editProductName" class="form-label">Nama Produk</label>
+                            <input type="text" class="form-control" id="editProductName" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editProductDescription" class="form-label">Deskripsi</label>
+                            <textarea class="form-control" id="editProductDescription" name="description"></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="editProductPrice" class="form-label">Harga (Rp)</label>
+                                <input type="number" class="form-control" id="editProductPrice" name="price" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editProductStock" class="form-label">Stok</label>
+                                <input type="number" class="form-control" id="editProductStock" name="stock" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editProductImageFile" class="form-label">Ganti Gambar Produk</label>
+                            <input type="file" class="form-control" id="editProductImageFile" name="imageFile">
+                            <small class="text-muted">Kosongkan jika tidak ingin mengganti gambar.</small>
+                        </div>
+                        <button type="submit" class="btn btn-purple-action w-100 py-2">Simpan Perubahan</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/merchAdmin.js"></script>
+</body>
+</html>

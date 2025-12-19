@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Saya - GPdI Bethlehem</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="icon" type="image/png" href="/Foto/logo/logo_biasa.png"> 
+    <link rel="stylesheet" href="/css/style.css">
+
+    <style>
+        /* --- STYLE KHUSUS PROFIL (MATCHING PERSEMBAHAN) --- */
+        body {
+            background-color: #ffffff;
+        }
+
+        /* 1. Header Gradient Vertikal */
+        .purple-header {
+            padding-top: 150px; 
+            padding-bottom: 100px;
+            background: linear-gradient(to bottom, #270349 0%, #ffffff 100%);
+            color: white;
+            width: 100%;
+        }
+
+        /* 2. Form Styling (Clean) */
+        .form-floating > .form-control {
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            background-color: #fcfcfc;
+        }
+        .form-floating > .form-control:focus {
+            border-color: #bd81f6;
+            background-color: #fff;
+            box-shadow: 0 0 0 0.25rem rgba(189, 129, 246, 0.25);
+        }
+
+        /* 3. Tombol Update */
+        .btn-update {
+            background: linear-gradient(135deg, #270c41 0%, #512da8 100%);
+            border: none;
+            color: white;
+            padding: 12px 40px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(39, 12, 65, 0.2);
+        }
+        .btn-update:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(39, 12, 65, 0.4);
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .purple-header { padding-top: 120px; padding-bottom: 50px; }
+        }
+    </style>
+</head>
+<body style=":not(header)font-family: 'Poppins', sans-serif;">
+
+    <header></header>
+
+    <section class="purple-header text-center px-4 px-md-5">
+        <div class="container-fluid">
+            
+            <h1 class="display-3 fw-bold" style="font-family: 'Cinzel Decorative', cursive;">Profil Saya</h1>
+            <p class="lead fs-4" style="opacity: 0.9;">Kelola informasi pribadi Anda</p>
+            
+            <div id="loading-profile" class="mt-3">
+                <i class="fas fa-spinner fa-spin me-2"></i> Memuat data...
+            </div>
+        </div>
+    </section>
+
+    <main class="container-fluid px-4 px-md-5 mb-5">
+        
+        <form id="profile-form" style="display: none;">
+            <input type="hidden" name="foto_profile_url" id="foto_profile_url">
+
+            <div class="row justify-content-center">
+                
+                <div class="col-lg-9"> 
+                    
+                    <h3 class="mb-4 fw-bold text-center" style="color: #270c41;">Informasi Pribadi</h3>
+                    
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="nama_lengkap" name="nama_lengkap" placeholder="Nama" required>
+                                <label for="nama_lengkap">Nama Lengkap</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                                <label for="email">Email Address</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="nomor_telepon" name="nomor_telepon" placeholder="Telepon">
+                                <label for="nomor_telepon">Nomor Telepon</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <select class="form-select" id="jenis_kelamin" name="jenis_kelamin">
+                                    <option value="Laki-laki">Laki-laki</option>
+                                    <option value="Perempuan">Perempuan</option>
+                                </select>
+                                <label for="jenis_kelamin">Jenis Kelamin</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" placeholder="Tempat Lahir">
+                                <label for="tempat_lahir">Tempat Lahir</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir">
+                                <label for="tanggal_lahir">Tanggal Lahir</label>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <textarea class="form-control" id="alamat" name="alamat" style="height: 100px" placeholder="Alamat"></textarea>
+                                <label for="alamat">Alamat Lengkap</label>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mt-5 text-center">
+                            <button type="submit" class="btn btn-update btn-lg">
+                                <i class="fas fa-save me-2"></i> Simpan Perubahan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </main>
+
+    <footer></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/profil.js"></script>
+</body>
+</html>

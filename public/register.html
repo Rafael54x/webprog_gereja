@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>GPdI Bethlehem</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="icon" type="image/png" href="/Foto/logo/logo_biasa.png"> 
+    <link rel="stylesheet" href="/css/style.css">
+
+    <style>
+        /* --- CSS KHUSUS HALAMAN REGISTER --- */
+        body {
+            /* Background Gradient Ungu (Konsisten dengan Login) */
+            background: linear-gradient(135deg, #270c41 0%, #512da8 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Poppins', sans-serif;
+            padding: 20px; /* Padding extra agar tidak mepet di HP */
+        }
+
+        .register-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 500px; /* Sedikit lebih lebar dari login karena isian lebih banyak */
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Garis ungu hiasan di atas kartu */
+        .register-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 5px;
+            background: linear-gradient(90deg, #bd81f6, #270c41);
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo-img {
+            width: 70px;
+            height: auto;
+            margin-bottom: 15px;
+        }
+
+        .register-title {
+            font-family: 'Cinzel Decorative', cursive;
+            color: #270c41;
+            font-weight: 700;
+            margin-bottom: 5px;
+            font-size: 1.8rem;
+        }
+
+        .register-subtitle {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        /* Styling Input Form */
+        .form-floating > .form-control {
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            background-color: #f8f9fa;
+        }
+        
+        .form-floating > .form-control:focus {
+            border-color: #bd81f6;
+            background-color: #fff;
+            box-shadow: 0 0 0 0.25rem rgba(189, 129, 246, 0.25);
+        }
+
+        /* Password Hint */
+        .password-hint {
+            font-size: 0.75rem;
+            color: #666;
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: start;
+            gap: 8px;
+        }
+
+        /* Tombol Daftar */
+        .btn-register {
+            background: linear-gradient(135deg, #270c41 0%, #512da8 100%);
+            border: none;
+            color: white;
+            padding: 12px;
+            border-radius: 50px;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(81, 45, 168, 0.4);
+            color: white;
+        }
+
+        /* Link Login */
+        .login-link {
+            text-align: center;
+            font-size: 0.9rem;
+            margin-top: 25px;
+            color: #555;
+        }
+        .login-link a {
+            color: #512da8;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Tombol Kembali */
+        .btn-home {
+            position: absolute;
+            top: 20px; left: 20px;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            z-index: 10;
+        }
+        .btn-home:hover { color: white; }
+
+        /* Mobile Adjustments */
+        @media (max-width: 576px) {
+            .btn-home { top: 10px; left: 10px; }
+            .register-card { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="btn-home">
+        <i class="fas fa-arrow-left me-2"></i> Kembali
+    </a>
+
+    <div class="register-card">
+        
+        <div class="header-section">
+            <img src="/Foto/logo/logo_biasa.png" alt="Logo GPdI" class="logo-img">
+            <h1 class="register-title">Buat Akun Baru</h1>
+            <p class="register-subtitle">Bergabunglah dengan komunitas kami</p>
+        </div>
+
+        <div id="status-message" class="alert d-none text-center" role="alert"></div>
+
+        <form id="register-form" action="/api/auth/register" method="POST">
+            
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="namaInput" name="nama_lengkap" placeholder="Nama Lengkap" required>
+                <label for="namaInput"><i class="fas fa-user-tag me-2 text-muted"></i>Nama Lengkap</label>
+            </div>
+            
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="usernameInput" name="username" placeholder="Username" required>
+                <label for="usernameInput"><i class="fas fa-at me-2 text-muted"></i>Username</label>
+            </div>
+
+            <div class="form-floating mb-2">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                <label for="password"><i class="fas fa-lock me-2 text-muted"></i>Password</label>
+            </div>
+
+            <div class="password-hint">
+                <i class="fas fa-info-circle text-warning mt-1"></i>
+                <span>Min. 8 karakter, harus mengandung: huruf besar, huruf kecil, angka, dan simbol underscore (_).</span>
+            </div>
+            
+            <div class="form-floating mb-4">
+                <input type="password" class="form-control" id="retype_password" name="retype_password" placeholder="Ulangi Password" required>
+                <label for="retype_password"><i class="fas fa-key me-2 text-muted"></i>Ulangi Password</label>
+            </div>
+
+            <button type="submit" class="btn btn-register">
+                DAFTAR SEKARANG <i class="fas fa-user-plus ms-2"></i>
+            </button>
+
+        </form>
+        
+        <div class="login-link">
+            Sudah punya akun? <a href="/login.html">Login di sini</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/register.js"></script>
+</body>
+</html>

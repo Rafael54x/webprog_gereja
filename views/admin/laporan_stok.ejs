@@ -1,0 +1,32 @@
+<script>
+document.getElementById('filterForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+
+    // Panggil API yang kita buat di merchController
+    const response = await fetch(`/admin/api/report-data?startDate=${startDate}&endDate=${endDate}`);
+    const result = await response.json();
+
+    if (result.success) {
+        const tbody = document.getElementById('reportContent');
+        tbody.innerHTML = ''; // Kosongkan tabel lama
+
+        result.data.forEach(item => {
+            tbody.innerHTML += `
+                <tr>
+                    <td class="text-secondary">PR${item.product_id}</td>
+                    <td class="fw-bold">${item.product_name}</td>
+                    <td class="text-center text-success fw-bold">${item.masuk}</td>
+                    <td class="text-center text-danger fw-bold">${item.keluar}</td>
+                    <td class="text-end fw-bold">${item.stok_akhir}</td>
+                    <td class="text-center text-secondary">pcs</td>
+                </tr>
+            `;
+        });
+        
+        document.getElementById('periodeText').innerText = `${startDate} s/d ${endDate}`;
+    }
+});
+</script>

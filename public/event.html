@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event - GPdI Bethlehem</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="icon" type="image/png" href="/Foto/logo/logo_biasa.png"> 
+    <link rel="stylesheet" href="/css/style.css" />
+
+    <style>
+        body {
+            background-color: #f9f9f9;
+            margin: 0; /* Pastikan margin body 0 */
+            padding: 0;
+        }
+
+        /* Hero Section (Foto Header) */
+        .hero-event {
+            position: relative;
+            margin-bottom: 0;
+            margin-top: 0; /* Pastikan tidak ada margin atas */
+            top: 0;        /* Tempel ke paling atas */
+            width: 100%;
+            /* Pastikan class ini di style.css menampilkan gambar background dengan height yang cukup */
+        }
+
+        /* Container Utama Konten */
+        #main-content {
+            position: relative;
+            z-index: 10;
+            background: transparent;
+            margin-top: -60px; /* Naik sedikit menimpa foto header */
+            padding-bottom: 50px;
+            min-height: 80vh; 
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        /* --- 1. SEARCH BAR --- */
+        .search-area {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .search-input-clean {
+            background: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            font-size: 1rem;
+            color: #270c41;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: 0.3s;
+        }
+        
+        .search-input-clean:focus {
+            outline: none;
+            box-shadow: 0 15px 40px rgba(39, 12, 65, 0.15);
+            transform: translateY(-2px);
+        }
+
+        /* --- 2. SLIDER AREA --- */
+        #slider-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Slide Item */
+        .event-slide {
+            display: none; /* Sembunyi default */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            animation: fadeIn 0.5s ease-in-out;
+            text-align: center;
+        }
+
+        .event-slide.active {
+            display: flex; /* Tampil jika aktif */
+        }
+
+        /* Poster Besar */
+        .poster-large {
+            height: auto;
+            max-height: 500px;
+            width: auto;
+            max-width: 90%;
+            object-fit: contain;
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            margin-bottom: 25px;
+            background: white;
+            transition: transform 0.3s;
+        }
+        
+        .poster-large:hover {
+            transform: scale(1.02);
+        }
+
+        /* Info Event */
+        .event-title-large {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 2.2rem;
+            color: #270c41;
+            margin-bottom: 15px;
+        }
+
+        /* Tombol Daftar */
+        .btn-action {
+            background: transparent;
+            border: 2px solid #270c41;
+            color: #270c41;
+            padding: 10px 40px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-action:hover {
+            background: #270c41;
+            color: white;
+            box-shadow: 0 5px 20px rgba(39, 12, 65, 0.3);
+        }
+
+        /* --- 3. NAVIGASI (NEXT/PREV) --- */
+        .nav-btn {
+            position: absolute;
+            top: 40%; 
+            transform: translateY(-50%);
+            background: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            color: #270c41;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.3s;
+            z-index: 50;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .nav-btn:hover {
+            background: #270c41;
+            color: white;
+        }
+
+        #prevBtn { left: 20px; }
+        #nextBtn { right: 20px; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .poster-large { max-height: 350px; }
+            .event-title-large { font-size: 1.5rem; }
+            #prevBtn { left: 10px; width: 40px; height: 40px; }
+            #nextBtn { right: 10px; width: 40px; height: 40px; }
+        }
+    </style>
+</head>
+<body style=":not(header)font-family: 'Poppins', sans-serif;">
+
+    <header></header>
+
+    <div class="hero-event">
+        <div class="hero-overlay"></div>
+    </div>
+
+    <main id="main-content">
+        
+        <div class="search-area">
+            <form id="searchForm" style="width: 100%; display: flex; justify-content: center;" onsubmit="event.preventDefault(); window.searchEvents();">
+                <input id="searchInput" class="search-input-clean" type="search" placeholder="Cari Event...">
+            </form>
+        </div>
+
+        <div id="slider-wrapper">
+            <button id="prevBtn" class="nav-btn"><i class="fas fa-chevron-left"></i></button>
+            <button id="nextBtn" class="nav-btn"><i class="fas fa-chevron-right"></i></button>
+
+            <div id="sliderContent" style="width: 100%;">
+                <div class="text-center py-5">
+                    <div class="spinner-border text-secondary" role="status"></div>
+                    <p class="mt-2 text-muted">Memuat event...</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script> 
+    <script src="/js/event.js"></script>
+</body>
+</html>
