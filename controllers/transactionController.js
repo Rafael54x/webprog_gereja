@@ -1,6 +1,6 @@
 // controllers/transactionController.js
 
-const db = require('../config/database'); // Sesuaikan jika Anda menggunakan '../config/db'
+const db = require('../config/db'); // Sesuaikan jika Anda menggunakan '../config/db'
 const { isLoggedIn } = require('../middleware/authMiddleware'); // Pastikan path benar
 
 // =========================================================

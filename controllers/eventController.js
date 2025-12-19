@@ -1,6 +1,6 @@
 // File: controllers/eventController.js
 
-const db = require('../config/database'); 
+const db = require('../config/db'); 
 const fs = require('fs').promises; // Import fs dengan Promise untuk hapus file
 const path = require('path');     // Import path
 
