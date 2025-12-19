@@ -10,9 +10,7 @@ const pool = mysql.createPool({
     ssl: process.env.NODE_ENV === 'production' ? {
         rejectUnauthorized: false
     } : false,
-    connectionLimit: 10,
-    acquireTimeout: 60000,
-    timeout: 60000
+    connectionLimit: 10
 });
 
 module.exports = {
