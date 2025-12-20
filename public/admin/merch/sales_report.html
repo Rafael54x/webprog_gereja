@@ -26,11 +26,24 @@
         <div class="card shadow-sm mb-3 no-print">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <input type="text" id="searchInput" class="form-control" placeholder="Cari berdasarkan nama, alamat, atau item...">
                     </div>
-                    <div class="col-md-6">
-                        <button onclick="clearSearch()" class="btn btn-secondary">Clear</button>
+                    <div class="col-md-3">
+                        <select id="sortSelect" class="form-select">
+                            <option value="newest">Terbaru ke Terlama</option>
+                            <option value="oldest">Terlama ke Terbaru</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select id="filterMode" class="form-select">
+                            <option value="all">Semua Mode</option>
+                            <option value="pribadi">Pribadi</option>
+                            <option value="hadiah">Hadiah</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button onclick="clearFilters()" class="btn btn-secondary w-100">Clear</button>
                     </div>
                 </div>
             </div>
@@ -79,20 +92,37 @@
                     renderTable(allReportData);
                     
                     // Add search functionality
-                    document.getElementById('searchInput').addEventListener('input', function() {
-                        const searchTerm = this.value.toLowerCase();
-                        const filteredData = allReportData.filter(row => 
-                            row.customer_name.toLowerCase().includes(searchTerm) ||
-                            row.customer_address.toLowerCase().includes(searchTerm) ||
-                            row.items_sold.toLowerCase().includes(searchTerm)
-                        );
-                        renderTable(filteredData);
-                    });
+                    document.getElementById('searchInput').addEventListener('input', applyFilters);
+                    document.getElementById('sortSelect').addEventListener('change', applyFilters);
+                    document.getElementById('filterMode').addEventListener('change', applyFilters);
                 }
             } catch (error) {
                 console.error("Gagal memuat laporan:", error);
             }
         });
+
+        function applyFilters() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const sortOrder = document.getElementById('sortSelect').value;
+            const modeFilter = document.getElementById('filterMode').value;
+            
+            let filteredData = allReportData.filter(row => {
+                const matchesSearch = row.customer_name.toLowerCase().includes(searchTerm) ||
+                                    row.customer_address.toLowerCase().includes(searchTerm) ||
+                                    row.items_sold.toLowerCase().includes(searchTerm);
+                const matchesMode = modeFilter === 'all' || row.shipping_mode === modeFilter;
+                return matchesSearch && matchesMode;
+            });
+            
+            // Sort by date
+            filteredData.sort((a, b) => {
+                const dateA = new Date(a.transaction_date);
+                const dateB = new Date(b.transaction_date);
+                return sortOrder === 'newest' ? dateB - dateA : dateA - dateB;
+            });
+            
+            renderTable(filteredData);
+        }
 
         function renderTable(data) {
             const tbody = document.getElementById('reportTableBody');
@@ -121,8 +151,10 @@
             document.getElementById('totalRevenue').innerText = `Rp ${totalRev.toLocaleString('id-ID')}`;
         }
 
-        function clearSearch() {
+        function clearFilters() {
             document.getElementById('searchInput').value = '';
+            document.getElementById('sortSelect').value = 'newest';
+            document.getElementById('filterMode').value = 'all';
             renderTable(allReportData);
         }
     </script>
