@@ -2,6 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const galleryContainer = document.getElementById('gallery-container');
     const paginationContainer = document.getElementById('pagination-container');
     
+    // Exit early if not on gallery page
+    if (!galleryContainer) return;
+    
     let allGalleryItems = []; // Menyimpan SEMUA data dari database
     const itemsPerPage = 6;   // Batas 6 foto per halaman
     let currentPage = 1;      // Halaman aktif saat ini
@@ -142,6 +145,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 4. Fungsi Utama Fetch Data ---
     async function loadPublicGallery() {
+        if (!galleryContainer) return;
+        
         galleryContainer.innerHTML = '<p class="loading-text text-white text-center">Memuat galeri...</p>';
 
         try {
