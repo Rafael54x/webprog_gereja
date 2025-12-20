@@ -6,6 +6,8 @@ const { isAdmin, isLoggedIn } = require('../middleware/authMiddleware');
 // ==========================================================
 // RUTE JEMAAT PROFILE (DAPAT DIAKSES OLEH JEMAAT BIASA)
 // ==========================================================
+// Test session endpoint
+router.get('/test-session', jemaatController.testSession);
 // Sekarang isLoggedIn sudah didefinisikan!
 router.get('/me', isLoggedIn, jemaatController.getJemaatProfile); 
 router.put('/me', isLoggedIn, jemaatController.updateJemaatProfile); 

@@ -62,15 +62,51 @@ exports.deleteJemaat = async (req, res) => {
 // FUNGSI PROFIL JEMAAT (Modul 'Profil Saya' - Read & Update)
 // ==========================================================
 
+// Test endpoint to debug session
+exports.testSession = async (req, res) => {
+    console.log('=== SESSION TEST ===');
+    console.log('Session:', req.session);
+    console.log('Session user:', req.session.user);
+    res.json({ 
+        hasSession: !!req.session,
+        hasUser: !!req.session.user,
+        user: req.session.user 
+    });
+};
+
 exports.getJemaatProfile = async (req, res) => {
     const userId = req.session.user.id;
     try {
         const [jemaat] = await db.query('SELECT * FROM master_jemaat WHERE user_id = ?', [userId]);
+        
         if (jemaat.length === 0) {
-            return res.status(404).json({ message: 'Data profil tidak ditemukan.' });
+            // Create empty profile if not exists
+            const emptyProfile = {
+                id: null,
+                nama_lengkap: req.session.user.nama_lengkap || '',
+                email: '',
+                nomor_telepon: '',
+                alamat: '',
+                tempat_lahir: '',
+                tanggal_lahir: null,
+                jenis_kelamin: 'Laki-laki', // Default frontend format
+                foto_profile_url: '',
+                user_id: userId
+            };
+            return res.json(emptyProfile);
         }
-        res.json(jemaat[0]);
+        
+        // Convert database format to frontend format
+        const profile = jemaat[0];
+        if (profile.jenis_kelamin) {
+            profile.jenis_kelamin = profile.jenis_kelamin === 'L' ? 'Laki-laki' : 
+                                   profile.jenis_kelamin === 'P' ? 'Perempuan' : 
+                                   profile.jenis_kelamin;
+        }
+        
+        res.json(profile);
     } catch (error) {
+        console.error('Error loading profile:', error);
         res.status(500).json({ message: 'Server Error saat memuat profil.' });
     }
 };
@@ -93,39 +129,56 @@ exports.updateJemaatProfile = async (req, res) => {
             foto_profile_url
         } = req.body;
             
-        if (!nama_lengkap || !email) {
-            return res.status(400).json({ message: 'Nama lengkap dan email wajib diisi.' });
+        if (!nama_lengkap) {
+            return res.status(400).json({ message: 'Nama lengkap wajib diisi.' });
         }
 
-        const userQuery = 'UPDATE users SET nama_lengkap = ? WHERE id = ?';
-        await db.query(userQuery, [nama_lengkap, userId]);
+        // Convert empty strings to null and handle jenis_kelamin conversion
+        const cleanData = {
+            nama_lengkap: nama_lengkap || null,
+            email: email || null,
+            nomor_telepon: nomor_telepon || null,
+            alamat: alamat || null,
+            tempat_lahir: tempat_lahir || null,
+            tanggal_lahir: tanggal_lahir || null,
+            jenis_kelamin: jenis_kelamin === 'Laki-laki' ? 'L' : 
+                          jenis_kelamin === 'Perempuan' ? 'P' : null,
+            foto_profile_url: foto_profile_url || null
+        };
 
-        const jemaatQuery = `
-            UPDATE master_jemaat 
-            SET nomor_telepon = ?, alamat = ?, tempat_lahir = ?, 
-                tanggal_lahir = ?, jenis_kelamin = ?, email = ?, foto_profile_url = ?
-            WHERE user_id = ?
-        `;
-        const jemaatValues = [
-            nomor_telepon,
-            alamat,
-            tempat_lahir,
-            tanggal_lahir,
-            jenis_kelamin,
-            email,
-            foto_profile_url,
-            userId
-        ];
-        await db.query(jemaatQuery, jemaatValues);
+        // Update users table
+        await db.query('UPDATE users SET nama_lengkap = ? WHERE id = ?', [cleanData.nama_lengkap, userId]);
+
+        // Check if jemaat record exists
+        const [existing] = await db.query('SELECT id FROM master_jemaat WHERE user_id = ?', [userId]);
+        
+        if (existing.length === 0) {
+            // Insert new record
+            const insertQuery = `
+                INSERT INTO master_jemaat 
+                (nama_lengkap, email, nomor_telepon, alamat, tempat_lahir, tanggal_lahir, jenis_kelamin, foto_profile_url, user_id)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `;
+            await db.query(insertQuery, [cleanData.nama_lengkap, cleanData.email, cleanData.nomor_telepon, cleanData.alamat, cleanData.tempat_lahir, cleanData.tanggal_lahir, cleanData.jenis_kelamin, cleanData.foto_profile_url, userId]);
+        } else {
+            // Update existing record
+            const updateQuery = `
+                UPDATE master_jemaat 
+                SET nama_lengkap = ?, email = ?, nomor_telepon = ?, alamat = ?, tempat_lahir = ?, 
+                    tanggal_lahir = ?, jenis_kelamin = ?, foto_profile_url = ?
+                WHERE user_id = ?
+            `;
+            await db.query(updateQuery, [cleanData.nama_lengkap, cleanData.email, cleanData.nomor_telepon, cleanData.alamat, cleanData.tempat_lahir, cleanData.tanggal_lahir, cleanData.jenis_kelamin, cleanData.foto_profile_url, userId]);
+        }
 
         if (req.session.user) {
-            req.session.user.nama_lengkap = nama_lengkap;
+            req.session.user.nama_lengkap = cleanData.nama_lengkap;
         }
 
         res.status(200).json({ message: 'Profil berhasil diperbarui.' });
 
     } catch (error) {
         console.error('SERVER ERROR SAAT UPDATE PROFIL:', error);
-        res.status(500).json({ message: 'Terjadi kesalahan di server. Periksa kembali nama kolom database.' });
+        res.status(500).json({ message: 'Terjadi kesalahan di server.' });
     }
 };
