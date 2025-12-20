@@ -87,21 +87,29 @@ exports.checkout = async (req, res) => {
 // ==========================================
 
 exports.inventoryIn = async (req, res) => {
-    const { items } = req.body;
-    if (!items || items.length === 0) return res.status(400).json({ success: false, message: 'Daftar barang kosong.' });
+    console.log('Inventory In Request Body:', req.body);
+    const { items, transaction_date, supplier_id } = req.body;
+    
+    if (!items || items.length === 0) {
+        console.log('Error: Items array is empty or missing');
+        return res.status(400).json({ success: false, message: 'Daftar barang kosong.' });
+    }
 
     try {
-        await db.query('START TRANSACTION');
+        console.log('Processing items without transaction...');
+        
         for (const item of items) {
+            console.log('Processing item:', item);
             await db.query('UPDATE merchandise_products SET stock = stock + ? WHERE id = ?', [item.quantity, item.product_id]);
-            await db.query('INSERT INTO inventory_logs (product_id, type, quantity, transaction_date) VALUES (?, "IN", ?, NOW())', 
-                [item.product_id, item.quantity]);
+            await db.query('INSERT INTO inventory_logs (product_id, type, quantity, transaction_date) VALUES (?, ?, ?, NOW())', 
+                [item.product_id, 'IN', item.quantity]);
         }
-        await db.query('COMMIT');
+        
+        console.log('All items processed successfully');
         res.json({ success: true, message: 'Stok berhasil ditambahkan!' });
     } catch (error) {
-        await db.query('ROLLBACK');
-        res.status(500).json({ success: false, message: 'Gagal memproses barang masuk.' });
+        console.error('Inventory In Error:', error);
+        res.status(500).json({ success: false, message: 'Gagal memproses barang masuk: ' + error.message });
     }
 };
 

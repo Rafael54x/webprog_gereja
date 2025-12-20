@@ -135,15 +135,28 @@
                 items: itemsToSave
             };
 
-            const response = await fetch('/api/merch/inventory-in', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
+            console.log('Sending payload:', payload);
 
-            if (response.ok) {
-                alert('✅ Berhasil Simpan Transaksi!');
-                window.location.href = '/merchAdmin.html';
+            try {
+                const response = await fetch('/api/merch/inventory-in', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                console.log('Response:', result);
+
+                if (response.ok) {
+                    alert('✅ Berhasil Simpan Transaksi!');
+                    window.location.href = '/merchAdmin.html';
+                } else {
+                    alert('❌ Error: ' + (result.message || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+                alert('❌ Network error: ' + error.message);
             }
         }
     </script>
