@@ -599,6 +599,16 @@ footer hr { border-color: rgba(255,255,255,0.1); }
     transform: scale(1.05); box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
 }
 
+/* Wadah cards default styling */
+.wadah-card h5 {
+    font-family: 'Gill Sans', 'Gill Sans MT', sans-serif;
+}
+
+.wadah-card p {
+    font-size: 0.9rem;
+    font-family: sans-serif;
+}
+
 /* Responsive Extra */
 @media (max-width: 768px) {
     .visi-misi-title { font-size: 2.5rem; }
@@ -607,11 +617,44 @@ footer hr { border-color: rgba(255,255,255,0.1); }
     
     .bg-dark-purple-section { padding: 50px 20px; }
     .side-image { width: 100%; margin-left: 0; margin-top: 20px; }
+    
+    /* Side image schedule - full view tanpa zoom di mobile */
+    .side-img-schedule {
+        width: 100% !important;
+        height: auto !important;
+        object-fit: contain !important;
+        max-height: 300px !important;
+        margin: 0 !important;
+    }
+    
+    /* Wadah cards - bigger image, smaller text */
+    .wadah-img {
+        width: 140px !important;
+        height: 140px !important;
+    }
+    
+    .wadah-card h5 {
+        font-size: 0.9rem !important;
+        margin-top: 1rem !important;
+    }
+    
+    .wadah-card p {
+        font-size: 0.75rem !important;
+    }
 
     /* Space gambar Visi Misi di HP */
     #collapseVisi, #collapseMisi, #collapseIman {
         padding-left: 20px !important;
         padding-right: 20px !important;
+    }
+    
+    /* Wadah cards mobile text size */
+    .wadah-card h5 {
+        font-size: 0.85rem !important;
+    }
+    
+    .wadah-card p {
+        font-size: 0.75rem !important;
     }
 }
 
