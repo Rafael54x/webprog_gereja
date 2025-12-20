@@ -126,11 +126,17 @@ body.admin-page {
 /* Penyesuaian untuk layar kecil (HP) agar tulisan 'Welcome' aman */
 @media (max-width: 768px) {
     .hero-banner {
-        height: 100vh; /* Tetap full screen di HP */
+        height: 60vh; /* Lebih kecil di mobile */
+        justify-content: center;
+        align-items: center;
     }
     
     .hero-banner img {
-        object-position: center; /* Pastikan tetap di tengah */
+        object-position: center;
+        width: 1000%; /* Sedikit lebih kecil di mobile */
+        height: auto;
+        max-height: 60vh;
+        border-radius: 10px; /* Tambah radius untuk estetika */
     }
 }
 
@@ -457,7 +463,34 @@ body.role-admin .jemaat-only, body.role-admin .public-only { display: none; }
     gap: 1.8rem;
     margin-top: 2rem;
 }
-.gallery-full-width { width: 100%; padding: 0 2rem; box-sizing: border-box; }
+.gallery-full-width { 
+    width: 100%; 
+    padding: 0 2rem; 
+    box-sizing: border-box; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Mobile Gallery Centering */
+@media (max-width: 768px) {
+    .gallery-grid {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        max-width: 100%;
+        padding: 0 1rem;
+    }
+    
+    .gallery-full-width {
+        padding: 0 1rem;
+        align-items: center;
+    }
+    
+    #pagination-container {
+        justify-content: center !important;
+        width: 100%;
+    }
+}
 
 .gallery-item, .gallery-item-admin {
     background-color: #fff; border-radius: 8px;
