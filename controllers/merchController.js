@@ -37,8 +37,6 @@ exports.checkout = async (req, res) => {
     if (!customer_name) return res.status(400).json({ success: false, message: 'Nama penerima wajib diisi!' });
 
     try {
-        await db.query('START TRANSACTION');
-
         // Sinkronisasi data ke Master Tujuan
         const syncCustomerQuery = `
     INSERT INTO merchandise_customers (user_id, name, address, phone)
@@ -70,14 +68,12 @@ exports.checkout = async (req, res) => {
             
             await db.query('UPDATE merchandise_products SET stock = stock - ? WHERE id = ?', [item.quantity, item.product_id]);
             
-            await db.query('INSERT INTO inventory_logs (product_id, type, quantity, transaction_date) VALUES (?, "OUT", ?, NOW())', 
-                [item.product_id, item.quantity]);
+            await db.query('INSERT INTO inventory_logs (product_id, type, quantity, transaction_date) VALUES (?, ?, ?, NOW())', 
+                [item.product_id, 'OUT', item.quantity]);
         }
         
-        await db.query('COMMIT'); 
         res.status(201).json({ success: true, message: 'Pembelian Berhasil!', total_paid: finalTotal });
     } catch (error) {
-        await db.query('ROLLBACK');
         res.status(500).json({ success: false, message: error.message });
     }
 };
@@ -119,14 +115,11 @@ exports.inventoryOut = async (req, res) => {
         const [prod] = await db.query('SELECT stock FROM merchandise_products WHERE id = ?', [product_id]);
         if (prod[0].stock < quantity) return res.status(400).json({ success: false, message: 'Stok kurang.' });
 
-        await db.query('START TRANSACTION');
         await db.query('UPDATE merchandise_products SET stock = stock - ? WHERE id = ?', [quantity, product_id]);
-        await db.query('INSERT INTO inventory_logs (product_id, type, quantity, transaction_date) VALUES (?, "OUT", ?, NOW())', 
-            [product_id, quantity]);
-        await db.query('COMMIT');
+        await db.query('INSERT INTO inventory_logs (product_id, type, quantity, transaction_date) VALUES (?, ?, ?, NOW())', 
+            [product_id, 'OUT', quantity]);
         res.json({ success: true, message: 'Stok berhasil dikurangi.' });
     } catch (error) {
-        await db.query('ROLLBACK');
         res.status(500).json({ success: false, message: 'Gagal mengurangi stok.' });
     }
 };
