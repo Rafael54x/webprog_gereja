@@ -627,10 +627,12 @@ footer hr { border-color: rgba(255,255,255,0.1); }
         margin: 0 !important;
     }
     
-    /* Wadah cards - bigger image, smaller text */
+    /* Wadah cards - use original portrait resolution, full screen width */
     .wadah-img {
-        width: 140px !important;
-        height: 140px !important;
+        width: auto !important;
+        height: auto !important;
+        max-width: 90vw !important;
+        max-height: 35vh !important;
     }
     
     .wadah-card h5 {
@@ -655,6 +657,12 @@ footer hr { border-color: rgba(255,255,255,0.1); }
     
     .wadah-card p {
         font-size: 0.75rem !important;
+    }
+    
+    /* Remove column layout in mobile - stack vertically */
+    .row .col-6.col-lg-4 {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
     }
 }
 
